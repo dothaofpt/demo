@@ -1,94 +1,47 @@
 
-package Model;
+package entities;
 
 import jakarta.persistence.*;
+import lombok.Data; // Sử dụng Lombok để tự động tạo getter và setter
+
+import javax.management.relation.Role;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@Data // Lombok sẽ tự động tạo getter, setter, và các phương thức cần thiết
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private Long userId; // ID người dùng
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String username;
+    @Column(unique = true, nullable = false)
+    private String username; // Tên người dùng
 
     @Column(nullable = false)
-    private String password;
+    private String password; // Mật khẩu
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String email;
+    @Column(unique = true, nullable = false)
+    private String email; // Địa chỉ email
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    private Role role; // Vai trò người dùng
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt; // Ngày tạo
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt; // Ngày cập nhật
 
-    public enum Role {
-
+    // Constructor
+    public User() {
+        this.createdAt = LocalDateTime.now(); // Khởi tạo thời gian tạo
     }
 
-    public int getUserId() {
-        return userId;
+    // Phương thức để cập nhật ngày cập nhật
+    @PreUpdate
+    public void updateTimestamp() {
+        this.updatedAt = LocalDateTime.now(); // Cập nhật thời gian khi có thay đổi
     }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
 }

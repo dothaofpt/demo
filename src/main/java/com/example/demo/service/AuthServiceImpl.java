@@ -1,2 +1,5 @@
-package com.example.demo.service;public class AuthServiceImpl {
+package com.example.demo.service;
+
+public class AuthServiceImpl implements AuthService{
+
 }
